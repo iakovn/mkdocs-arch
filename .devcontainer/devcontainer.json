@@ -1,0 +1,24 @@
+{
+    "name": "MkDocs Architecture Documentation",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "mkdocs",
+    "workspaceFolder": "/workspace",
+
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+        "vscode": {
+            // Add the IDs of extensions you want installed when the container is created.
+            "extensions": [
+                "ms-azuretools.vscode-docker",
+                "ms-python.python",
+                "shd101wyy.markdown-preview-enhanced",
+                "GitHub.copilot",
+                "GitHub.copilot-chat"
+            ],
+            "settings": {
+                "python.pythonPath": "/usr/local/bin/python"
+            }
+        }
+    }
+}

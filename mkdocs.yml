@@ -1,0 +1,11 @@
+site_name: "Architecture Documentation"
+theme:
+  name: "material"
+plugins:
+  - plantuml:
+      server: "http://plantuml:8080"
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Diagrams:
+      - Architecture Diagram: diagrams/architecture.puml

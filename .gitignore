@@ -1,2 +1,3 @@
 docs/diagrams/generated/
 site/
+__pycache__/

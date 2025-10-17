@@ -1,5 +1,7 @@
 # MkDocs Architecture Documentation
 
+**Version:** {{ git_version }}
+
 Welcome to the architectural documentation for our project. This documentation provides an overview of the system architecture, its components, and their interactions.
 
 ## Overview

@@ -1,12 +1,14 @@
 site_name: "Architecture Documentation"
 theme:
   name: "material"
+
 plugins:
   - plantuml:
       puml_url: "http://plantuml:8080"
       theme:
         enabled: false
   - search:
+  - macros:
   - build_plantuml:
       render: 'server'
       server: 'http://plantuml:8080'
@@ -17,7 +19,7 @@ plugins:
       input_folder: 'src'
       input_extensions: 'puml' # comma separated list of extensions to parse, by default every file is parsed
 nav:
-  - Home: index.md
+  - Home ({{ git_version }}): index.md
   - Architecture: architecture.md
   - Diagrams:
       - Architecture Diagrams: diagrams/architecture.md

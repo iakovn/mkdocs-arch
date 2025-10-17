@@ -32,9 +32,17 @@ jobs:
           # Export a minimal set of env vars for the container. Add secrets if your deploy needs them.
           echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" > .env
           echo "CI=true" >> .env
+          # Export runner UID/GID so containers can run as the host user and write bind-mounted files
+          echo "LOCAL_UID=$(id -u)" >> .env
+          echo "LOCAL_GID=$(id -g)" >> .env
 
       - name: Deploy site (make deploy)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CI: true
-        run: make deploy
+          LOCAL_UID: ${{ env.LOCAL_UID }}
+          LOCAL_GID: ${{ env.LOCAL_GID }}
+        run: |
+          mkdirs -p docs/diagrams/generated
+          chmod o+rw docs/diagrams/generated
+          make deploy

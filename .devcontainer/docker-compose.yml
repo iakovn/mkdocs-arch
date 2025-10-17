@@ -9,12 +9,13 @@ services:
       - ..:/workspace
     environment:
       - PLANTUML_SERVER=http://localhost:8080
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
     stdin_open: true
     tty: true
     depends_on:
       - plantuml
     network_mode: "service:plantuml"
-    
+
   plantuml:
     image: plantuml/plantuml-server:jetty
     ports:

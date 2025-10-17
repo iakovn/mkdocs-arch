@@ -24,7 +24,6 @@ if [ "$(IN_DOCKER)" = "yes" ]; then \
   exec $1 $2 $3 $4 $5; \
 else \
   docker compose -f .devcontainer/docker-compose.yml \
-  	-e GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}" \
     run --rm -v $$(pwd):/workspace -w /workspace mkdocs $1 $2 $3 $4 $5; \
 fi
 endef

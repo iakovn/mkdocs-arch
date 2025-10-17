@@ -1,17 +1,31 @@
 {
-  "extends": ["config:base"],
-  "labels": ["dependencies"],
+  "extends": [
+    "config:base"
+  ],
+  "labels": [
+    "dependencies"
+  ],
   "dependencyDashboard": true,
-  "enabledManagers": ["pip_requirements"],
+  "enabledManagers": [
+    "pip_requirements"
+  ],
   "pip_requirements": {
-    "fileMatch": ["(^|/)requirements\\.txt$"]
+    "fileMatch": [
+      "(^|/)requirements\\.txt$"
+    ]
   },
   "packageRules": [
     {
-      "matchManagers": ["pip_requirements"],
-      "matchPackagePatterns": ["*"],
+      "matchManagers": [
+        "pip_requirements"
+      ],
+      "matchPackagePatterns": [
+        "*"
+      ],
       "groupName": "all-pip-dependencies",
-      "schedule": ["before 3am on monday"],
+      "schedule": [
+        "before 3am on monday"
+      ],
       "automerge": true,
       "automergeType": "pr",
       "semanticCommitType": "chore",
@@ -20,5 +34,7 @@
   ],
   "prHourlyLimit": 2,
   "prConcurrentLimit": 5,
-  "timezone": "UTC"
+  "timezone": "UTC",
+  "semanticCommits": true,
+  "semanticCommitType": "chore"
 }

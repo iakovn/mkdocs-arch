@@ -1,0 +1,20 @@
+{
+    "name": "mkdocs-arch",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "prepare": "husky install",
+        "commit": "cz",
+        "lint:commit": "commitlint --from=HEAD~1"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^17.6.0",
+        "@commitlint/config-conventional": "^17.6.0",
+        "husky": "^8.0.0",
+        "commitizen": "^4.3.0",
+        "semantic-release": "^23.0.0",
+        "@semantic-release/commit-analyzer": "^10.0.0",
+        "@semantic-release/release-notes-generator": "^10.0.0",
+        "@semantic-release/github": "^10.0.0"
+    }
+}

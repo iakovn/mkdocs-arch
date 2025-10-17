@@ -29,6 +29,7 @@ fi
 endef
 
 .PHONY: devenv build serve
+.PHONY: lock-deps
 
 ## Build the mkdocs Docker image using .devcontainer/mkdocs.dockerfile (skipped inside container)
 devenv:
@@ -53,3 +54,8 @@ serve: devenv
 deploy: devenv
 	@echo "==> Running: mkdocs gh-deploy"
 	@bash -c '$(call _run,mkdocs,gh-deploy,-v)'
+
+## Generate/update package-lock.json using npm (runs inside container or via docker compose)
+lock-deps:
+	@echo "==> Locking JS dependencies (npm ci && npm install --package-lock-only)"
+	@bash -c 'npm ci && npm install --package-lock-only'

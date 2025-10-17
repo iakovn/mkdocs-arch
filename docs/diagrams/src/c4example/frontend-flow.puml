@@ -20,39 +20,37 @@ Container(api, "API Backend", "Go", "Backend application")
 ContainerDb(db, "Database", "PostgreSQL", "Simulation data store")
 System_Ext(queue, "Queue System", "Machinery/Lambda", "Task execution")
 
-Rel(researcher, view, "1. Fills form and clicks Submit", "User Input")
-Rel(view, form, "2. Trigger form validation", "v-on:submit")
-Rel(form, form, "3. Validate SimulationParameters", "Local validation")
-Rel(form, view, "4. Emit submit event", "@submit")
+Rel_D(researcher, view, "1. Fills form and clicks Submit", "User Input")
+Rel_D(view, form, "2. Trigger form validation", "v-on:submit")
+Rel_L(form, form, "3. Validate SimulationParameters", "")
+Rel_U(form, view, "4. Emit submit event", "@submit")
 
-RelIndex(view, composable, "5. Call submitSimulation(params)", "Function call", "5")
-RelIndex(composable, composable, "6. Create Simulation instance", "new Simulation()", "6")
-RelIndex(composable, composable, "7. Validate domain rules", "simulation.validate()", "7")
-RelIndex(composable, store, "8. Dispatch action", "submitSimulation", "8")
-RelIndex(store, store, "9. Set loading state", "isLoading = true", "9")
+Rel_R(view, composable, "5. submitSimulation(params)", "")
+Rel_L(composable, composable, "6. Create & validate Simulation", "")
+Rel_D(composable, store, "7. Dispatch action", "")
+Rel_L(store, store, "8. Set loading state", "")
 
-RelIndex(store, service, "10. Call service method", "submit(simulation)", "10")
-RelIndex(service, service, "11. Transform to DTO", "toDTO(simulation)", "11")
-RelIndex(service, client, "12. HTTP POST request", "post('/simulations', dto)", "12")
-RelIndex(client, client, "13. Add auth headers", "Request interceptor", "13")
+Rel_D(store, service, "9. submit(simulation)", "")
+Rel_D(service, service, "10. Transform to DTO", "")
+Rel_R(service, client, "11. post('/simulations')", "")
+Rel_L(client, client, "12. Add auth headers", "")
 
-RelIndex(client, api, "14. POST /api/v1/simulations", "JSON/HTTPS", "14")
-RelIndex(api, db, "15. Save metadata", "SQL INSERT", "15")
-RelIndex(api, queue, "16. Enqueue via adapter", "Queue protocol", "16")
+Rel_D(client, api, "13. POST /api/v1/simulations", "JSON/HTTPS")
+Rel_D(api, db, "14. Save metadata", "SQL")
+Rel_D(api, queue, "15. Enqueue", "")
 
-RelIndex(api, client, "17. Return SimulationDTO", "201 Created", "17")
-RelIndex(client, service, "18. Promise resolves", "HTTP response", "18")
-RelIndex(service, service, "19. Transform to domain", "fromDTO(dto)", "19")
-RelIndex(service, store, "20. Return Simulation", "", "20")
+Rel_L(api, client, "16. Return SimulationDTO", "201")
+Rel_L(client, service, "17. Promise resolves", "")
+Rel_D(service, service, "18. fromDTO()", "")
+Rel_L(service, store, "19. Return Simulation", "")
 
-RelIndex(store, store, "21. Update state", "Add to simulations[]", "21")
-RelIndex(store, store, "22. Clear loading", "isLoading = false", "22")
-RelIndex(store, composable, "23. Reactive update", "State change", "23")
-RelIndex(composable, view, "24. State propagates", "Vue reactivity", "24")
+Rel_L(store, store, "20. Update state", "")
+Rel_L(store, store, "21. Clear loading", "")
+Rel_U(store, composable, "22. Reactive update", "")
+Rel_L(composable, view, "23. State propagates", "")
 
-RelIndex(view, view, "25. Hide loading spinner", "UI update", "25")
-RelIndex(view, researcher, "26. Show success notification", "Toast message", "26")
-RelIndex(view, researcher, "27. Navigate to detail", "Router.push()", "27")
+Rel_L(view, view, "24. Update UI", "")
+Rel_U(view, researcher, "25. Show notification & navigate", "")
 
 note right of view
   **View Layer**
@@ -88,12 +86,12 @@ end note
 
 note bottom of api
   **Key Architectural Points:**
-  1. **Consistent terminology**: "Simulation" used at every layer
-  2. **Clear separation**: Each layer has single responsibility
-  3. **Adapter pattern**: Service translates between domain and API
-  4. **Reactive updates**: Vue reactivity propagates state changes
-  5. **Type safety**: TypeScript ensures type consistency
-  6. **Testability**: Each layer can be tested independently
+  1. Consistent terminology: "Simulation" at every layer
+  2. Clear separation of concerns
+  3. Adapter pattern for API translation
+  4. Vue reactivity for state propagation
+  5. Type safety with TypeScript
+  6. Each layer independently testable
 end note
 
 SHOW_LEGEND()

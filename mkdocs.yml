@@ -23,6 +23,7 @@ nav:
   - Architecture: architecture.md
   - Diagrams:
       - Architecture Diagrams: diagrams/architecture.md
+      - C4 Example: simulationQueueC4.md
 dev_addr: 0.0.0.0:8000  # need to bind to all interfaces in devcontainer to enable access from host
 markdown_extensions:
   - pymdownx.snippets

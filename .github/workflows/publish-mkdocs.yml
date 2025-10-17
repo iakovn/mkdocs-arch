@@ -39,10 +39,17 @@ jobs:
       - name: Deploy site (make deploy)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_ACTOR: ${{ github.actor }}
           CI: true
           LOCAL_UID: ${{ env.LOCAL_UID }}
           LOCAL_GID: ${{ env.LOCAL_GID }}
         run: |
+          # Set Git identity
+          git config user.name "${GIT_AUTHOR_NAME:-github-actions}"
+          git config user.email "${GIT_AUTHOR_EMAIL:-github-actions@github.com}"
+          # Set remote with token
+          git remote set-url origin "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           mkdir -p docs/diagrams/generated
           mkdir -p site
           chmod o+rw docs/diagrams/generated site

@@ -7,14 +7,16 @@ services:
       context: ..
     volumes:
       - ..:/workspace
-    ports:
-      - "8000:8000"
     environment:
-      - PLANTUML_SERVER=http://plantuml:8080
+      - PLANTUML_SERVER=http://localhost:8080
     stdin_open: true
     tty: true
-
+    depends_on:
+      - plantuml
+    network_mode: "service:plantuml"
+    
   plantuml:
     image: plantuml/plantuml-server:jetty
     ports:
       - "8080:8080"
+      - "8000:8000"

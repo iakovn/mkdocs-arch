@@ -3,9 +3,24 @@ theme:
   name: "material"
 plugins:
   - plantuml:
-      server: "http://plantuml:8080"
+      puml_url: "http://plantuml:8080"
+      theme:
+        enabled: false
+  - search:
+  - build_plantuml:
+      render: 'server'
+      server: 'http://plantuml:8080'
+      output_format: 'svg' # or "png"
+      allow_multiple_roots: false # in case your codebase contains more locations for diagrams (all ending in diagram_root)
+      diagram_root: 'docs/diagrams' # should reside under docs_dir
+      output_folder: 'generated'
+      input_folder: 'src'
+      input_extensions: 'puml' # comma separated list of extensions to parse, by default every file is parsed
 nav:
   - Home: index.md
   - Architecture: architecture.md
   - Diagrams:
-      - Architecture Diagram: diagrams/architecture.puml
+      - Architecture Diagrams: diagrams/architecture.md
+dev_addr: 0.0.0.0:8000  # need to bind to all interfaces in devcontainer to enable access from host
+markdown_extensions:
+  - pymdownx.snippets

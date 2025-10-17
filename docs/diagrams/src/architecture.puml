@@ -1,4 +1,4 @@
-@startuml
+@startuml Example Architecture Diagram
 !define RECTANGLE class
 RECTANGLE ComponentA {
   +method1()

@@ -22,7 +22,7 @@ The system is designed to provide a robust solution for [insert purpose or funct
 
 ## Architectural Diagram
 
-![Architecture Diagram](diagrams/architecture.puml)
+![Diagram](diagrams/generated/architecture.svg)
 
 ## Design Principles
 

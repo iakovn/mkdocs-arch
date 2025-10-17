@@ -29,7 +29,6 @@ WORKDIR /home/dev
 # Copy project files and install Python requirements
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
-COPY . /home/dev
 RUN chown -R dev:dev /home/dev
 
 COPY requirements.txt /tmp/requirements.txt

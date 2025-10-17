@@ -20,6 +20,7 @@ jobs:
         run: npm ci
 
       - name: Run semantic-release
+        permissions: write-all
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release

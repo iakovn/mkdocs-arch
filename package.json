@@ -5,7 +5,8 @@
     "scripts": {
         "prepare": "husky install",
         "commit": "cz",
-        "lint:commit": "commitlint --from=HEAD~1"
+        "lint:commit": "commitlint --from=HEAD~1",
+        "ci": "npm ci"
     },
     "devDependencies": {
         "@commitlint/cli": "^17.6.0",

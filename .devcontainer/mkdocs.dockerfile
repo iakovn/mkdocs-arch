@@ -44,7 +44,6 @@ COPY --chown=dev:dev package.json package-lock.json /home/dev/
 RUN set -eux; \
     npm config set audit false; \
     npm config set prefix /home/dev; \
-    npm install -g corepack && corepack enable || true ; \
-    npm ci --no-audit --no-fund --prefix /home/dev; 
+    npm install -g corepack && corepack enable || true
 
 WORKDIR /workspace

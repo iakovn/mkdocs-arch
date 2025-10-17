@@ -1,3 +1,4 @@
 docs/diagrams/generated/
 site/
 __pycache__/
+node_modules/

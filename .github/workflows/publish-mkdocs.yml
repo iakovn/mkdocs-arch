@@ -43,6 +43,6 @@ jobs:
           LOCAL_UID: ${{ env.LOCAL_UID }}
           LOCAL_GID: ${{ env.LOCAL_GID }}
         run: |
-          mkdirs -p docs/diagrams/generated
+          mkdir -p docs/diagrams/generated
           chmod o+rw docs/diagrams/generated
           make deploy

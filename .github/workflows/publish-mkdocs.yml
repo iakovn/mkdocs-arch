@@ -44,5 +44,6 @@ jobs:
           LOCAL_GID: ${{ env.LOCAL_GID }}
         run: |
           mkdir -p docs/diagrams/generated
-          chmod o+rw docs/diagrams/generated
+          mkdir -p site
+          chmod o+rw docs/diagrams/generated site
           make deploy

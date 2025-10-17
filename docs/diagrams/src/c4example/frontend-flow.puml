@@ -1,0 +1,100 @@
+@startuml frontend-flow
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Dynamic Diagram - Simulation Submission Flow (Frontend Focus)
+
+Person(researcher, "Researcher", "System user")
+
+Container_Boundary(frontend, "Vue.js Frontend") {
+    Component(view, "SimulationSubmitView", "Vue Component", "View for submitting simulations")
+    Component(form, "SimulationForm", "Vue Component", "Reusable form with validation")
+    Component(composable, "useSimulation()", "Composable", "Reactive simulation operations")
+    Component(store, "SimulationStore", "Pinia Store", "State management for simulations")
+    Component(service, "SimulationService", "Service", "Translates domain to/from DTO")
+    Component(client, "ApiClient", "HTTP Client", "Makes authenticated API calls")
+}
+
+Container(api, "API Backend", "Go", "Backend application")
+ContainerDb(db, "Database", "PostgreSQL", "Simulation data store")
+System_Ext(queue, "Queue System", "Machinery/Lambda", "Task execution")
+
+Rel(researcher, view, "1. Fills form and clicks Submit", "User Input")
+Rel(view, form, "2. Trigger form validation", "v-on:submit")
+Rel(form, form, "3. Validate SimulationParameters", "Local validation")
+Rel(form, view, "4. Emit submit event", "@submit")
+
+RelIndex(view, composable, "5. Call submitSimulation(params)", "Function call", "5")
+RelIndex(composable, composable, "6. Create Simulation instance", "new Simulation()", "6")
+RelIndex(composable, composable, "7. Validate domain rules", "simulation.validate()", "7")
+RelIndex(composable, store, "8. Dispatch action", "submitSimulation", "8")
+RelIndex(store, store, "9. Set loading state", "isLoading = true", "9")
+
+RelIndex(store, service, "10. Call service method", "submit(simulation)", "10")
+RelIndex(service, service, "11. Transform to DTO", "toDTO(simulation)", "11")
+RelIndex(service, client, "12. HTTP POST request", "post('/simulations', dto)", "12")
+RelIndex(client, client, "13. Add auth headers", "Request interceptor", "13")
+
+RelIndex(client, api, "14. POST /api/v1/simulations", "JSON/HTTPS", "14")
+RelIndex(api, db, "15. Save metadata", "SQL INSERT", "15")
+RelIndex(api, queue, "16. Enqueue via adapter", "Queue protocol", "16")
+
+RelIndex(api, client, "17. Return SimulationDTO", "201 Created", "17")
+RelIndex(client, service, "18. Promise resolves", "HTTP response", "18")
+RelIndex(service, service, "19. Transform to domain", "fromDTO(dto)", "19")
+RelIndex(service, store, "20. Return Simulation", "", "20")
+
+RelIndex(store, store, "21. Update state", "Add to simulations[]", "21")
+RelIndex(store, store, "22. Clear loading", "isLoading = false", "22")
+RelIndex(store, composable, "23. Reactive update", "State change", "23")
+RelIndex(composable, view, "24. State propagates", "Vue reactivity", "24")
+
+RelIndex(view, view, "25. Hide loading spinner", "UI update", "25")
+RelIndex(view, researcher, "26. Show success notification", "Toast message", "26")
+RelIndex(view, researcher, "27. Navigate to detail", "Router.push()", "27")
+
+note right of view
+  **View Layer**
+  - Handles user interaction
+  - Displays validation errors
+  - Shows loading state
+  - Manages UI feedback
+end note
+
+note right of composable
+  **Composable Layer**
+  - Reactive state (isLoading)
+  - Business logic
+  - Error handling
+  - Domain model creation
+end note
+
+note right of store
+  **State Management**
+  - Optimistic UI updates
+  - Loading states
+  - Error states
+  - Cache simulation data
+end note
+
+note right of service
+  **Service Layer (Adapter)**
+  Translates between:
+  - Domain model (Simulation)
+  - API DTO (SimulationDTO)
+  Isolates API changes
+end note
+
+note bottom of api
+  **Key Architectural Points:**
+  1. **Consistent terminology**: "Simulation" used at every layer
+  2. **Clear separation**: Each layer has single responsibility
+  3. **Adapter pattern**: Service translates between domain and API
+  4. **Reactive updates**: Vue reactivity propagates state changes
+  5. **Type safety**: TypeScript ensures type consistency
+  6. **Testability**: Each layer can be tested independently
+end note
+
+SHOW_LEGEND()
+@enduml

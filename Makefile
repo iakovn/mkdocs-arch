@@ -56,7 +56,7 @@ deploy: devenv
 
 package-lock.json: package.json
 	@echo "==> Locking JS dependencies (npm ci && npm install --package-lock-only)"
-	@bash -c 'npm ci && npm install --package-lock-only'
+	@bash -c 'npm install --package-lock-only && npm ci'
 
 ## Generate/update package-lock.json using npm (runs inside container or via docker compose)
 lock-deps: package-lock.json

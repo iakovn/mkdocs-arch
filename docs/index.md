@@ -12,6 +12,7 @@ This documentation is structured to give you a comprehensive understanding of th
 
 To get started with the documentation, you can navigate through the sections listed in the sidebar. The main sections include:
 
+- [ADR](adr.md): ADR index page.
 - [Architecture](architecture.md): Generic architectural documentation with PlantUML.
 - [C4 Example with PlantUML](simulationQueueC4.md): C4 diagrams example with PlantUML.
 - [C4 Example with basic Mermaid](simulationQueueC4Mermaid.md): C4 diagrams example with basic Mermaid.

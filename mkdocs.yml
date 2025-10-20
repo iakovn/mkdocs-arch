@@ -23,6 +23,7 @@ plugins:
 nav:
   - Home ({{ git_version }}): index.md
   - Architecture: architecture.md
+  - ADR: adr.md
   - Diagrams:
       - Generic Architecture Diagrams: diagrams/architecture.md
       - C4/PlantUML Example: simulationQueueC4.md

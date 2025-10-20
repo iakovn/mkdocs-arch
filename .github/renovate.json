@@ -1,6 +1,6 @@
 {
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
   "labels": [
     "dependencies"
@@ -10,17 +10,14 @@
     "pip_requirements"
   ],
   "pip_requirements": {
-    "fileMatch": [
-      "(^|/)requirements\\.txt$"
+    "managerFilePatterns": [
+      "/(^|/)requirements\\.txt$/"
     ]
   },
   "packageRules": [
     {
       "matchManagers": [
         "pip_requirements"
-      ],
-      "matchPackagePatterns": [
-        "*"
       ],
       "groupName": "all-pip-dependencies",
       "schedule": [
@@ -29,12 +26,15 @@
       "automerge": true,
       "automergeType": "pr",
       "semanticCommitType": "chore",
-      "semanticCommitScope": "deps"
+      "semanticCommitScope": "deps",
+      "matchPackageNames": [
+        "*"
+      ]
     }
   ],
   "prHourlyLimit": 2,
   "prConcurrentLimit": 5,
   "timezone": "UTC",
-  "semanticCommits": true,
+  "semanticCommits": "enabled",
   "semanticCommitType": "chore"
 }

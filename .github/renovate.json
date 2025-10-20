@@ -7,7 +7,8 @@
   ],
   "dependencyDashboard": true,
   "enabledManagers": [
-    "pip_requirements"
+    "pip_requirements",
+    "npm"
   ],
   "pip_requirements": {
     "managerFilePatterns": [
@@ -30,8 +31,30 @@
       "matchPackageNames": [
         "*"
       ]
+    },
+    {
+      "matchManagers": [
+        "npm"
+      ],
+      "matchPackagePatterns": [
+        "*"
+      ],
+      "groupName": "all-npm-dependencies",
+      "schedule": [
+        "before 3am on monday"
+      ],
+      "automerge": true,
+      "automergeType": "pr",
+      "semanticCommitType": "chore",
+      "semanticCommitScope": "deps"
     }
   ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "fileMatch": [
+      "package-lock.json"
+    ]
+  },
   "prHourlyLimit": 2,
   "prConcurrentLimit": 5,
   "timezone": "UTC",

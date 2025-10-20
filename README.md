@@ -1,50 +1,79 @@
 # mkdocs-architecture-docs
 
-This project is designed for developing architectural documentation using MkDocs with the Material theme. It includes a PlantUML server for rendering diagrams directly within the documentation.
+This repository holds templates and environment setup intended for architectural
+ documentation development in Markdown served with MkDocs. It is designed to be used inside a VSCode devcontainer and includes automation for builds, releases and dependency updates.
+ The included tools and plugins facilitate PlantUML & Mermaid diagrams, and
+ Architecture Decisions Records (ADR) development.
 
-## Project Structure
+## Project structure
 
-- **.devcontainer/**: Contains configuration files for the development container.
-  - **devcontainer.json**: Configures the development environment.
-  - **docker-compose.yml**: Defines the services for MkDocs and PlantUML.
+- `.devcontainer/` — devcontainer and Docker Compose configuration (`devcontainer.json`, `docker-compose.yml`, `mkdocs.dockerfile`).
+- `docs/` — documentation sources and generated diagrams.
+- `mkdocs.yml` — MkDocs configuration.
+- `requirements.txt` — Python dependencies (plugins) used by MkDocs.
+- `package.json` / `package-lock.json` — dev tooling (commitlint, husky, semantic-release).
+- `.github/workflows/` — GitHub Actions workflows for publishing and releases.
+- `.github/renovate.json` — renovate configuration for dependency management.
 
-- **docs/**: Contains the documentation files.
-  - **index.md**: Main entry point for the documentation.
-  - **architecture.md**: Detailed architectural documentation.
-  - **diagrams/**: Directory for PlantUML diagrams.
-    - **architecture.puml**: PlantUML code for architecture diagrams.
+## Quickstart (recommended)
 
-- **mkdocs.yml**: Configuration file for MkDocs, including the PlantUML plugin.
+1. Open the repository in VS Code and start the devcontainer (Remote - Containers). The devcontainer will automatically initialize all the necessary tools.
+2. Use `make` for the most common commands. See `make help` for the full list.
+3. Use the installed VSCode plugins for Markdown, PlantUML and ADR preview.
+4. Serve the site locally for live preview at http://localhost:8000:
 
-- **requirements.txt**: Lists Python dependencies for the MkDocs project.
+```bash
+make serve
+```
 
-- **.gitignore**: Specifies files and directories to be ignored by Git.
+5. Deploy to GitHub Pages (this is also automatically done in CI on push to `main`):
 
-## Setup Instructions
+```bash
+make deploy
+```
 
-1. **Clone the Repository**: 
-   ```bash
-   git clone <repository-url>
-   cd mkdocs-architecture-docs
-   ```
+6. Update lockfile locally (generate/update `package-lock.json`):
 
-2. **Open in Development Container**: 
-   Use your preferred development environment to open the project in a containerized setup.
+```bash
+make lock-deps
+```
 
-3. **Build and Start Services**: 
-   The Docker Compose file will automatically set up the MkDocs and PlantUML services.
+Notes:
+- This is only needed when adding new packages. Maintenance is handled by Renovate in CI.
 
-4. **Access Documentation**: 
-   Once the services are running, you can access the documentation at `http://localhost:8000`.
+## Devcontainer and VS Code
 
-5. **Edit Documentation**: 
-   Modify the Markdown files in the `docs/` directory to update the documentation.
+The devcontainer bootstraps a development environment with Node.js and Python and installs dev tooling.
 
-6. **Render Diagrams**: 
-   Use the PlantUML server to render diagrams defined in the `diagrams/` directory.
+Recommended VS Code extensions (installed by the devcontainer):
 
-## Usage Guidelines
+- `ms-azuretools.vscode-docker` — Docker integration
+- `ms-python.python` — Python language support
+- `shd101wyy.markdown-preview-enhanced` — advanced markdown preview
+- `jebbs.plantuml` — PlantUML preview and rendering
+-  `StevenChen.vscode-adr-manager` - ADR manager
+- `eamodio.gitlens` — GitLens
+- `GitHub.copilot` and `GitHub.copilot-chat` — (optional) Copilot features
 
-- Ensure that the PlantUML server is running to render diagrams correctly.
-- Use the MkDocs development server for live previews of your documentation changes.
-- Follow best practices for documentation to maintain clarity and usability.
+If you open the repository outside the devcontainer, run `npm ci` locally and run `npm run prepare` to install Husky hooks.
+
+## Commit conventions & local linting
+
+- The repo relies on Conventional Commits for semantic-release. Commit messages should follow the Conventional Commits format (e.g. `feat(docs): add architecture overview`).
+- `commitlint` is configured via `.commitlintrc.js` and a Husky `commit-msg` hook is present at `.husky/commit-msg` to validate messages locally in the devcontainer.
+- Use `npm run commit` (commitizen) to create conventional commit messages interactively if desired.
+
+## Continuous integration and publishing
+
+This repository uses GitHub Actions to automate publishing and releases:
+
+- Semantic releases: A semantic release is used to generated release notes based on Conventional Commits and create a new tag.
+
+- Publish to GitHub Pages: On push to `main` a workflow updates tags a new releasebuilds the site and publishes it to the `gh-pages` branch. 
+
+- Renovate: Renovate is configured to automatically open PRs for Python (`requirements.txt`) and JavaScript (`package.json`) dependencies. It also manages `package-lock.json` via lock file maintenance and will use semantic commits so updates integrate with semantic-release.
+
+
+## Contributing
+
+Please follow the Conventional Commits format and run `npm run lint:commit` or rely on the Husky hook to validate commit messages. 

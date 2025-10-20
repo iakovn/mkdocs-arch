@@ -1,4 +1,6 @@
-site_name: "Architecture Documentation"
+site_name: "Architecture Documentation with MkDocs"
+repo_url: https://github.com/iakovn/mkdocs-arch
+repo_name: iakovn/mkdocs-arch
 theme:
   name: "material"
 

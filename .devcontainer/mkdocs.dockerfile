@@ -41,11 +41,12 @@ RUN pip install --user --no-cache-dir -r /tmp/requirements.txt
 # Copy package.json and optional package-lock.json from the build context and install dev toolchain
 COPY --chown=dev:dev package.json package-lock.json /home/dev/
 
+# configure npm
 RUN set -eux; \
     npm config set audit false; \
-    npm config set prefix /home/dev; \
-    npm install -g corepack && corepack enable || true
+    npm config set prefix /home/dev;
 
+# configre git to consider /workspace a safe directory (for devcontainer/mkdocs in CI)
 RUN git config --global --add safe.directory /workspace
 
 WORKDIR /workspace

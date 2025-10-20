@@ -36,9 +36,6 @@
       "matchManagers": [
         "npm"
       ],
-      "matchPackagePatterns": [
-        "*"
-      ],
       "groupName": "all-npm-dependencies",
       "schedule": [
         "before 3am on monday"
@@ -46,13 +43,16 @@
       "automerge": true,
       "automergeType": "pr",
       "semanticCommitType": "chore",
-      "semanticCommitScope": "deps"
+      "semanticCommitScope": "deps",
+      "matchPackageNames": [
+        "*"
+      ]
     }
   ],
   "lockFileMaintenance": {
     "enabled": true,
-    "fileMatch": [
-      "package-lock.json"
+    "managerFilePatterns": [
+      "/package-lock.json/"
     ]
   },
   "prHourlyLimit": 2,

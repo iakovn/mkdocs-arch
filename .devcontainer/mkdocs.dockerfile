@@ -46,6 +46,6 @@ RUN set -eux; \
     npm config set prefix /home/dev; \
     npm install -g corepack && corepack enable || true
 
-RUN git config --add safe.directory /workspace
+RUN git config --global --add safe.directory /workspace
 
 WORKDIR /workspace

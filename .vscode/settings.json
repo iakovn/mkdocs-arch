@@ -5,5 +5,16 @@
     "plantuml.exportOutDir": "docs/diagrams/generated",
     "plantuml.render": "PlantUMLServer",
     "plantuml.server": "http://plantuml:8080",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "adrManager.editorMode.addAdrEditorMode": "professional",
+    "adrManager.editorMode.viewAdrEditorMode": "professional",
+    "markdown-preview-enhanced.usePandocParser": false,
+    "rewrap.wrappingColumn": 80,
+    "[markdown]": {
+        "editor.wordWrap": "off",
+        "editor.formatOnSave": true
+    },
+    "editor.rulers": [
+        80
+    ]
 }

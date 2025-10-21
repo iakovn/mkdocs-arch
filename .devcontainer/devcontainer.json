@@ -15,11 +15,21 @@
                 "jebbs.plantuml",
                 "StevenChen.vscode-adr-manager",
                 "eamodio.gitlens",
+                "dnut.rewrap-revived",
                 "GitHub.copilot",
                 "GitHub.copilot-chat"
             ],
             "settings": {
-                "python.pythonPath": "/usr/local/bin/python"
+                "python.pythonPath": "/usr/local/bin/python",
+                "plantuml.exportFormat": "svg",
+                "markdown-preview-enhanced.plantumlServer": "http://plantuml:8080/svg/",
+                "plantuml.diagramsRoot": "docs/diagrams/src",
+                "plantuml.exportOutDir": "docs/diagrams/generated",
+                "plantuml.render": "PlantUMLServer",
+                "plantuml.server": "http://plantuml:8080",
+                "editor.formatOnSave": true,
+                "adrManager.editorMode.addAdrEditorMode": "professional",
+                "adrManager.editorMode.viewAdrEditorMode": "professional"
             }
         }
     },

@@ -1,4 +1,8 @@
-# Use Markdown and C4 Diagrams
+# Use MkDocs and C4 Diagrams
+
+* Status: Accepted
+* Deciders: iakovn
+* Date: 2025-10-20
 
 ## Context and Problem Statement
 
@@ -12,7 +16,7 @@ Need consistent high-level architecture documentation
 
 ## Decision Outcome
 
-Chosen option: "Mkdocs", because:
+Chosen option: "Mkdocs", because :
 
 - Free
 - no vendor lock-in

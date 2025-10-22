@@ -93,17 +93,16 @@ graph TD
     C --> D[Production Stage]
     D --> |Enable flag by default<br/>MINOR bump additive| E[v2.0.0: Feature enabled<br/>in production]
     D --> |Enable flag by default<br/>MAJOR bump breaking| E
-    E --> F[Feature in use]
-    F --> G[Deprecation Stage]
-    G --> |Mark as deprecated<br/>MINOR bump| H[v3.0.0: Feature deprecated<br/>documented warnings]
+    E --> F[Feature in Production]
+    F --> F1[v9.9.0 Some other Developments]
+    F1 --> G[Deprecation Stage]
+    G --> |Mark as deprecated<br/>MINOR bump| H[v9.10.0: Feature deprecated<br/>documented warnings]
     H --> I[Deprecation period]
     I --> J[Removal Stage]
-    J --> |Remove from API<br/>MAJOR bump| K[v4.0.0: Feature removed<br/>from public API]
-    K --> L{Clean-up needed?}
-    L --> |Yes| M[Clean-up Stage]
-    M --> |Remove implementation<br/>MINOR bump| N[v4.1.0: Implementation<br/>fully removed]
-    L --> |No| O[v10.0.0: Final Version]
-    N --> O
+    J --> |Remove from API<br/>MAJOR bump| K[v10.0.0: Feature removed<br/>from public API]
+    K --> M[Clean-up Stage]
+    M --> |Remove implementation<br/>MINOR bump| N[v10.1.0: Implementation<br/>fully removed]
+    N --> O[v10.1.0: Final Version]    
     
     style B fill:#e1f5ff
     style D fill:#c8e6c9
@@ -123,10 +122,10 @@ graph TD
 | Initial | v1.2.3 | Starting point |
 | Experimental | v1.3.0 | Feature added behind flag (MINOR) |
 | Production | v2.0.0 | Feature flag enabled (MAJOR - breaking behavior) |
-| Deprecation | v3.0.0 | Feature marked deprecated (MINOR, but shown as 3.0.0 for clarity) |
-| Removal | v4.0.0 | Feature removed from public API (MAJOR) |
-| Clean-up | v4.1.0 | Implementation cleaned up (MINOR) |
-| Future | v10.0.0 | Multiple major versions later |
+| Production (cont) | v2.0.0-v9.9.0 | Feature in use across several versions|
+| Deprecation | v9.10.0 | Feature marked deprecated (MINOR) |
+| Removal | v10.0.0 | Feature removed from public API (MAJOR) |
+| Clean-up | v10.1.0 | Implementation cleaned up (MINOR) |
 
 ---
 

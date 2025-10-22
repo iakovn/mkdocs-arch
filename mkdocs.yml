@@ -31,6 +31,8 @@ nav:
       - C4/PlantUML Example: simulationQueueC4.md
       - C4/Mermaid Example : simulationQueueC4Mermaid.md
       - C4/Mermaid experimental Example: simulationQueueC4MermaidX.md
+  - TBD: tbd-feature-lifecycle.md
+
 dev_addr: 0.0.0.0:8000  # need to bind to all interfaces in devcontainer to enable access from host
 markdown_extensions:
   - pymdownx.snippets

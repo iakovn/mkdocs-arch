@@ -2,7 +2,7 @@ name: Release and Deploy Docs
 
 on:
   push:
-    branches: ["main"]
+    branches: ["**"]
 
 permissions:
   pages: write        # For GitHub Pages deployment
@@ -49,6 +49,7 @@ jobs:
           make build
 
       - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
           publish_dir: ./site

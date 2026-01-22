@@ -1,14 +1,13 @@
-FROM python:3.11-slim
+FROM python:3.12-slim
 
-# Install prerequisites and Node.js (Node 18) via NodeSource on a Debian-based slim image
 ARG DEBIAN_FRONTEND=noninteractive
 
-# Install prerequisites, Node.js (Node 18) via NodeSource, and developer tools
+# Install prerequisites, Node.js (Node 22) via NodeSource, and developer tools
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     curl ca-certificates gnupg dirmngr build-essential \
     git make wget bash-completion sudo && \
-    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get install -y --no-install-recommends nodejs && \
     rm -rf /var/lib/apt/lists/*
 

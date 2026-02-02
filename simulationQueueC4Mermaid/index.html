@@ -1,0 +1,824 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../simulationQueueC4/" rel="prev"/>
+<link href="../simulationQueueC4MermaidX/" rel="next"/>
+<link href="../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.22" name="generator"/>
+<title>C4/Mermaid Example - Architecture Documentation with MkDocs</title>
+<link href="../assets/stylesheets/main.84d31ad4.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../assets/mkdocs_puml/puml.css" rel="stylesheet"/>
+<link href="../assets/mkdocs_puml/interaction.css" rel="stylesheet"/>
+<script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#simulation-job-queue-system-architecture-diagrams">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="Architecture Documentation with MkDocs" class="md-header__button md-logo" data-md-component="logo" href=".." title="Architecture Documentation with MkDocs">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Architecture Documentation with MkDocs
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              C4/Mermaid Example
+            
+          </span>
+</div>
+</div>
+</div>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/iakovn/mkdocs-arch" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    iakovn/mkdocs-arch
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Architecture Documentation with MkDocs" class="md-nav__button md-logo" data-md-component="logo" href=".." title="Architecture Documentation with MkDocs">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Architecture Documentation with MkDocs
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/iakovn/mkdocs-arch" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    iakovn/mkdocs-arch
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="..">
+<span class="md-ellipsis">
+    Home (v1.4.1-6-g1564fa3)
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../architecture/">
+<span class="md-ellipsis">
+    Architecture
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../adr/">
+<span class="md-ellipsis">
+    ADR
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-ellipsis">
+    Diagrams
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            Diagrams
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../diagrams/architecture/">
+<span class="md-ellipsis">
+    Generic Architecture Diagrams
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../simulationQueueC4/">
+<span class="md-ellipsis">
+    C4/PlantUML Example
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    C4/Mermaid Example
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    C4/Mermaid Example
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-system-context-diagram-c1">
+<span class="md-ellipsis">
+      1. System Context Diagram (C1)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-container-diagram-c2">
+<span class="md-ellipsis">
+      2. Container Diagram (C2)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-backend-component-diagram-c3">
+<span class="md-ellipsis">
+      3. Backend Component Diagram (C3)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-frontend-component-diagram-detailed-c3">
+<span class="md-ellipsis">
+      4. Frontend Component Diagram - Detailed (C3)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-frontend-code-structure-simulationsubmitview">
+<span class="md-ellipsis">
+      5. Frontend Code Structure - SimulationSubmitView
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-sequence-diagram-simulation-submission-flow">
+<span class="md-ellipsis">
+      6. Sequence Diagram - Simulation Submission Flow
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-class-diagram-frontend-domain-models">
+<span class="md-ellipsis">
+      7. Class Diagram - Frontend Domain Models
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8-state-diagram-simulation-lifecycle">
+<span class="md-ellipsis">
+      8. State Diagram - Simulation Lifecycle
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../simulationQueueC4MermaidX/">
+<span class="md-ellipsis">
+    C4/Mermaid experimental Example
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../tbd-feature-lifecycle/">
+<span class="md-ellipsis">
+    TBD
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-system-context-diagram-c1">
+<span class="md-ellipsis">
+      1. System Context Diagram (C1)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-container-diagram-c2">
+<span class="md-ellipsis">
+      2. Container Diagram (C2)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-backend-component-diagram-c3">
+<span class="md-ellipsis">
+      3. Backend Component Diagram (C3)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-frontend-component-diagram-detailed-c3">
+<span class="md-ellipsis">
+      4. Frontend Component Diagram - Detailed (C3)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-frontend-code-structure-simulationsubmitview">
+<span class="md-ellipsis">
+      5. Frontend Code Structure - SimulationSubmitView
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-sequence-diagram-simulation-submission-flow">
+<span class="md-ellipsis">
+      6. Sequence Diagram - Simulation Submission Flow
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-class-diagram-frontend-domain-models">
+<span class="md-ellipsis">
+      7. Class Diagram - Frontend Domain Models
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8-state-diagram-simulation-lifecycle">
+<span class="md-ellipsis">
+      8. State Diagram - Simulation Lifecycle
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="simulation-job-queue-system-architecture-diagrams">Simulation Job Queue System - Architecture Diagrams</h1>
+<h2 id="1-system-context-diagram-c1">1. System Context Diagram (C1)</h2>
+<div class="mermaid">graph TB
+    subgraph External Users
+        Researcher[👤 Researcher&lt;br/&gt;Submits and monitors simulations]
+        Admin[👤 System Administrator&lt;br/&gt;Manages configuration]
+    end
+
+    SimSystem[🎯 Simulation System&lt;br/&gt;Manages simulation jobs with&lt;br/&gt;consistent terminology]
+
+    subgraph External Systems
+        Machinery[⚙️ Machinery Queue&lt;br/&gt;Distributed task queue]
+        Lambda[☁️ AWS Lambda&lt;br/&gt;Serverless compute]
+        SQS[📬 AWS SQS&lt;br/&gt;Message queue]
+        Redis[💾 Redis&lt;br/&gt;In-memory store]
+        Monitoring[📊 Monitoring&lt;br/&gt;Prometheus/Grafana]
+    end
+
+    Researcher --&gt;|HTTPS| SimSystem
+    Admin --&gt;|HTTPS| SimSystem
+    SimSystem --&gt;|Machinery Protocol| Machinery
+    SimSystem --&gt;|AWS SDK| Lambda
+    SimSystem --&gt;|AWS API| SQS
+    Machinery --&gt;|Redis Protocol| Redis
+    SimSystem --&gt;|Metrics| Monitoring
+
+    style SimSystem fill:#d4edda,stroke:#28a745,stroke-width:3px
+    style Machinery fill:#f8d7da,stroke:#721c24,stroke-width:2px
+    style Lambda fill:#f8d7da,stroke:#721c24,stroke-width:2px
+    style SQS fill:#f8d7da,stroke:#721c24,stroke-width:2px
+    style Redis fill:#f8d7da,stroke:#721c24,stroke-width:2px
+    style Monitoring fill:#f8d7da,stroke:#721c24,stroke-width:2px
+</div>
+<hr/>
+<h2 id="2-container-diagram-c2">2. Container Diagram (C2)</h2>
+<div class="mermaid">graph TB
+    Researcher[👤 Researcher]
+
+    subgraph SimSystem[Simulation System]
+        SPA[📱 Web Application&lt;br/&gt;Vue.js SPA&lt;br/&gt;Uses 'Simulation' terminology]
+        Docs[📄 Documentation&lt;br/&gt;User Manual&lt;br/&gt;Ubiquitous Language]
+        API[⚙️ API Application&lt;br/&gt;Go&lt;br/&gt;Ports &amp; Adapters]
+        Domain[🎯 Domain Core&lt;br/&gt;Go&lt;br/&gt;Pure business logic]
+        DB[(💾 Database&lt;br/&gt;PostgreSQL&lt;br/&gt;Simulation metadata)]
+    end
+
+    subgraph External[External Systems]
+        Machinery[⚙️ Machinery&lt;br/&gt;+ Redis]
+        Lambda[☁️ AWS Lambda&lt;br/&gt;+ SQS]
+    end
+
+    Researcher --&gt;|HTTPS| SPA
+    Researcher --&gt;|Reads| Docs
+    SPA --&gt;|JSON/HTTPS&lt;br/&gt;Simulation API| API
+    API --&gt;|Uses| Domain
+    API --&gt;|SQL/TLS| DB
+    API --&gt;|MachineryAdapter| Machinery
+    API --&gt;|LambdaAdapter| Lambda
+
+    style Domain fill:#d4edda,stroke:#28a745,stroke-width:3px
+    style SPA fill:#e8f4f8,stroke:#2c5aa0,stroke-width:2px
+    style API fill:#e8f4f8,stroke:#2c5aa0,stroke-width:2px
+    style Machinery fill:#f8d7da,stroke:#721c24,stroke-width:2px
+    style Lambda fill:#f8d7da,stroke:#721c24,stroke-width:2px
+</div>
+<hr/>
+<h2 id="3-backend-component-diagram-c3">3. Backend Component Diagram (C3)</h2>
+<div class="mermaid">graph TB
+    SPA[📱 Vue.js Frontend]
+
+    subgraph API[API Application - Go Backend]
+        subgraph Primary[Primary Adapters - Driving]
+            Router[HTTP Router&lt;br/&gt;net/http]
+            Middleware[Auth Middleware]
+            Handler[SimulationHandler&lt;br/&gt;HTTP → Domain]
+        end
+
+        subgraph Ports[Port Interfaces]
+            ServicePort[SimulationService&lt;br/&gt;interface - Primary Port]
+            QueuePort[SimulationQueue&lt;br/&gt;interface - Secondary Port]
+            RepoPort[SimulationRepository&lt;br/&gt;interface - Secondary Port]
+        end
+
+        subgraph DomainLayer[Domain Layer - Core Business Logic]
+            Aggregate[Simulation Aggregate&lt;br/&gt;Entity + Value Objects]
+            Scheduler[SimulationScheduler&lt;br/&gt;Domain Service]
+            Validator[SimulationValidator&lt;br/&gt;Domain Service]
+        end
+
+        subgraph Secondary[Secondary Adapters - Driven]
+            MachineryAdapter[MachinerySimulationQueue&lt;br/&gt;Translates to Task]
+            LambdaAdapter[LambdaSimulationQueue&lt;br/&gt;Translates to Event]
+            PGAdapter[PostgresSimulationRepo&lt;br/&gt;SQL Implementation]
+        end
+    end
+
+    subgraph External[External Systems]
+        Machinery[⚙️ Machinery&lt;br/&gt;Task Queue]
+        Lambda[☁️ AWS Lambda]
+        DB[(💾 PostgreSQL)]
+    end
+
+    SPA --&gt; Router
+    Router --&gt; Middleware
+    Middleware --&gt; Handler
+    Handler --&gt; ServicePort
+    ServicePort --&gt; Aggregate
+    ServicePort --&gt; Scheduler
+    ServicePort --&gt; Validator
+    ServicePort --&gt; QueuePort
+    ServicePort --&gt; RepoPort
+    QueuePort -.implements.-&gt; MachineryAdapter
+    QueuePort -.implements.-&gt; LambdaAdapter
+    RepoPort -.implements.-&gt; PGAdapter
+    MachineryAdapter --&gt; Machinery
+    LambdaAdapter --&gt; Lambda
+    PGAdapter --&gt; DB
+
+    style DomainLayer fill:#d4edda,stroke:#28a745,stroke-width:3px
+    style Ports fill:#fff3cd,stroke:#856404,stroke-width:2px
+    style Primary fill:#cce5ff,stroke:#004085,stroke-width:2px
+    style Secondary fill:#cce5ff,stroke:#004085,stroke-width:2px
+</div>
+<hr/>
+<h2 id="4-frontend-component-diagram-detailed-c3">4. Frontend Component Diagram - Detailed (C3)</h2>
+<div class="mermaid">graph TB
+    User[👤 Researcher]
+
+    subgraph VueSPA[Vue.js Frontend Application]
+        subgraph Views[Views - Pages]
+            ListView[SimulationListView&lt;br/&gt;List all simulations]
+            DetailView[SimulationDetailView&lt;br/&gt;Simulation details]
+            SubmitView[SimulationSubmitView&lt;br/&gt;Submit new simulation]
+            Dashboard[DashboardView&lt;br/&gt;Overview &amp; stats]
+        end
+
+        subgraph Components[Reusable Components]
+            Card[SimulationCard&lt;br/&gt;Display summary]
+            Form[SimulationForm&lt;br/&gt;Input with validation]
+            Status[SimulationStatusBadge&lt;br/&gt;Visual status]
+            Table[SimulationTable&lt;br/&gt;Sortable table]
+        end
+
+        subgraph Composables[Composables - Vue 3]
+            UseSimulation[useSimulation&lt;br/&gt;Submit, cancel, refresh]
+            UseList[useSimulationList&lt;br/&gt;Fetch, filter, sort]
+            UseAuth[useAuth&lt;br/&gt;Authentication]
+            UseNotify[useNotification&lt;br/&gt;Toast messages]
+        end
+
+        subgraph StateManagement[State Management - Pinia]
+            SimStore[SimulationStore&lt;br/&gt;Actions, Getters, State]
+            AuthStore[AuthStore&lt;br/&gt;Auth state]
+            UIStore[UIStore&lt;br/&gt;Loading, errors]
+        end
+
+        subgraph Services[Services Layer - Adapters]
+            SimService[SimulationService&lt;br/&gt;DTO ↔ Domain translation]
+            AuthService[AuthService&lt;br/&gt;Token management]
+            ApiClient[ApiClient&lt;br/&gt;HTTP wrapper]
+        end
+
+        subgraph Models[Domain Models - Frontend]
+            SimModel[Simulation&lt;br/&gt;TypeScript Interface]
+            ParamsModel[SimulationParameters&lt;br/&gt;Value Object]
+            StatusModel[SimulationStatus&lt;br/&gt;Enum: PENDING, RUNNING...]
+        end
+    end
+
+    Backend[⚙️ Go API Backend]
+
+    User --&gt; ListView
+    User --&gt; SubmitView
+    ListView --&gt; Table
+    ListView --&gt; Card
+    SubmitView --&gt; Form
+    DetailView --&gt; Status
+
+    ListView --&gt; UseList
+    SubmitView --&gt; UseSimulation
+    DetailView --&gt; UseSimulation
+
+    UseSimulation --&gt; SimStore
+    UseList --&gt; SimStore
+    UseAuth --&gt; AuthStore
+
+    SimStore --&gt; SimService
+    AuthStore --&gt; AuthService
+    SimService --&gt; ApiClient
+    AuthService --&gt; ApiClient
+
+    SimService --&gt; SimModel
+    SimStore --&gt; SimModel
+    SimModel --&gt; ParamsModel
+    SimModel --&gt; StatusModel
+
+    ApiClient --&gt; Backend
+
+    style Models fill:#d4edda,stroke:#28a745,stroke-width:3px
+    style Services fill:#cce5ff,stroke:#004085,stroke-width:2px
+    style StateManagement fill:#fff3cd,stroke:#856404,stroke-width:2px
+    style Composables fill:#e8f4f8,stroke:#2c5aa0,stroke-width:2px
+</div>
+<hr/>
+<h2 id="5-frontend-code-structure-simulationsubmitview">5. Frontend Code Structure - SimulationSubmitView</h2>
+<div class="mermaid">graph TB
+    subgraph Component[SimulationSubmitView.vue - Single File Component]
+        subgraph Template[Template Section]
+            HTML[&lt;template&gt;&lt;br/&gt;Declarative UI markup]
+            FormUsage[&lt;SimulationForm&gt;&lt;br/&gt;Component instance]
+            NotifUsage[&lt;NotificationToast&gt;&lt;br/&gt;Notifications]
+        end
+
+        subgraph Script[Script Section - Composition API]
+            Imports[Import statements&lt;br/&gt;Dependencies]
+            ComposableSetup[Setup composables&lt;br/&gt;useSimulation, useNotification]
+            ReactiveState[Reactive state&lt;br/&gt;ref, reactive]
+            ComputedProps[Computed properties&lt;br/&gt;canSubmit, isFormValid]
+            Methods[Methods&lt;br/&gt;handleSubmit, validateForm]
+            Lifecycle[Lifecycle hooks&lt;br/&gt;onMounted, onUnmounted]
+            Watchers[Watchers&lt;br/&gt;watch formData changes]
+        end
+
+        subgraph Style[Style Section]
+            CSS[&lt;style scoped&gt;&lt;br/&gt;Component styles]
+        end
+    end
+
+    subgraph UsedComposables[Composables]
+        UseSimComp[useSimulation&lt;br/&gt;submit, cancel, isLoading]
+        UseNotifComp[useNotification&lt;br/&gt;showSuccess, showError]
+    end
+
+    subgraph DomainModels[Domain Models]
+        Simulation[Simulation&lt;br/&gt;id, name, parameters, status]
+        SimParams[SimulationParameters&lt;br/&gt;iterations, timeout, algorithm]
+        SimStatus[SimulationStatus&lt;br/&gt;PENDING &amp;#124; RUNNING &amp;#124; COMPLETED]
+    end
+
+    subgraph Store[Pinia Store]
+        Actions[SimulationStore.actions&lt;br/&gt;submitSimulation]
+        State[SimulationStore.state&lt;br/&gt;simulations, loading]
+    end
+
+    subgraph Service[Service Layer]
+        SimServiceSubmit[SimulationService.submit&lt;br/&gt;Transform &amp; API call]
+        ApiPost[ApiClient.post&lt;br/&gt;HTTP POST]
+    end
+
+    Template --&gt; Script
+    Script --&gt; ComposableSetup
+    ComposableSetup --&gt; UseSimComp
+    ComposableSetup --&gt; UseNotifComp
+    Methods --&gt; UseSimComp
+    Methods --&gt; Simulation
+    ReactiveState --&gt; SimParams
+
+    UseSimComp --&gt; Actions
+    Actions --&gt; SimServiceSubmit
+    SimServiceSubmit --&gt; ApiPost
+
+    Simulation --&gt; SimParams
+    Simulation --&gt; SimStatus
+
+    style Component fill:#e8f4f8,stroke:#2c5aa0,stroke-width:3px
+    style DomainModels fill:#d4edda,stroke:#28a745,stroke-width:2px
+    style Service fill:#cce5ff,stroke:#004085,stroke-width:2px
+</div>
+<hr/>
+<h2 id="6-sequence-diagram-simulation-submission-flow">6. Sequence Diagram - Simulation Submission Flow</h2>
+<div class="mermaid">sequenceDiagram
+    actor Researcher
+    participant View as SimulationSubmitView
+    participant Form as SimulationForm
+    participant Comp as useSimulation()
+    participant Store as SimulationStore
+    participant Service as SimulationService
+    participant Client as ApiClient
+    participant API as Go Backend
+    participant DB as PostgreSQL
+    participant Queue as Queue System
+
+    Researcher-&gt;&gt;View: 1. Fills form and clicks Submit
+    View-&gt;&gt;Form: 2. Trigger validation
+    Form-&gt;&gt;Form: 3. Validate SimulationParameters
+    Form--&gt;&gt;View: 4. Emit submit event (formData)
+
+    View-&gt;&gt;Comp: 5. submitSimulation(params)
+    Comp-&gt;&gt;Comp: 6. Create Simulation instance
+    Comp-&gt;&gt;Comp: 7. Validate domain rules
+    Comp-&gt;&gt;Store: 8. dispatch('submitSimulation')
+    Store-&gt;&gt;Store: 9. Set isLoading = true
+
+    Store-&gt;&gt;Service: 10. simulationService.submit(simulation)
+    Service-&gt;&gt;Service: 11. Transform to SimulationDTO
+    Service-&gt;&gt;Client: 12. apiClient.post('/simulations', dto)
+    Client-&gt;&gt;Client: 13. Add auth headers
+
+    Client-&gt;&gt;API: 14. POST /api/v1/simulations
+    API-&gt;&gt;DB: 15. Save simulation metadata
+    API-&gt;&gt;Queue: 16. Enqueue via adapter
+    API--&gt;&gt;Client: 17. Return SimulationDTO (201)
+
+    Client--&gt;&gt;Service: 18. Promise resolves
+    Service-&gt;&gt;Service: 19. Transform DTO to Simulation
+    Service--&gt;&gt;Store: 20. Return Simulation
+
+    Store-&gt;&gt;Store: 21. Add to simulations[]
+    Store-&gt;&gt;Store: 22. Set isLoading = false
+    Store--&gt;&gt;Comp: 23. Reactive state update
+    Comp--&gt;&gt;View: 24. State propagates (Vue reactivity)
+
+    View-&gt;&gt;View: 25. Hide loading spinner
+    View-&gt;&gt;Researcher: 26. Show success notification
+    View-&gt;&gt;Researcher: 27. Navigate to simulation detail
+
+    Note over View,Comp: View Layer&lt;br/&gt;User interaction &amp; UI state
+    Note over Comp,Store: Composable Layer&lt;br/&gt;Business logic &amp; reactive state
+    Note over Store,Service: State Management&lt;br/&gt;Single source of truth
+    Note over Service,Client: Service/Adapter Layer&lt;br/&gt;DTO ↔ Domain translation
+    Note over API,Queue: Backend&lt;br/&gt;Hexagonal architecture
+</div>
+<hr/>
+<h2 id="7-class-diagram-frontend-domain-models">7. Class Diagram - Frontend Domain Models</h2>
+<div class="mermaid">classDiagram
+    class Simulation {
+        +SimulationId id
+        +string name
+        +SimulationParameters parameters
+        +SimulationStatus status
+        +Date createdAt
+        +Date updatedAt
+        +submit() Promise~void~
+        +cancel() Promise~void~
+        +validate() ValidationResult
+        +isRunning() boolean
+        +isCompleted() boolean
+    }
+
+    class SimulationParameters {
+        +number iterations
+        +number timeout
+        +AlgorithmType algorithm
+        +Map~string,any~ customParams
+        +validate() boolean
+        +toJSON() object
+    }
+
+    class SimulationId {
+        +string value
+        +equals(other) boolean
+        +toString() string
+    }
+
+    class SimulationStatus {
+        &lt;&lt;enumeration&gt;&gt;
+        PENDING
+        RUNNING
+        COMPLETED
+        FAILED
+        CANCELLED
+    }
+
+    class AlgorithmType {
+        &lt;&lt;enumeration&gt;&gt;
+        MONTE_CARLO
+        GENETIC_ALGORITHM
+        NEURAL_NETWORK
+        CUSTOM
+    }
+
+    class SimulationDTO {
+        +string id
+        +string name
+        +object parameters
+        +string status
+        +string createdAt
+    }
+
+    class SimulationService {
+        +submit(simulation) Promise~Simulation~
+        +cancel(id) Promise~void~
+        +getById(id) Promise~Simulation~
+        +list(filters) Promise~Simulation[]~
+        -toDTO(simulation) SimulationDTO
+        -fromDTO(dto) Simulation
+    }
+
+    Simulation "1" *-- "1" SimulationId : has
+    Simulation "1" *-- "1" SimulationParameters : contains
+    Simulation "1" --&gt; "1" SimulationStatus : has
+    SimulationParameters --&gt; AlgorithmType : uses
+    SimulationService ..&gt; Simulation : creates/returns
+    SimulationService ..&gt; SimulationDTO : transforms
+
+    note for Simulation "Domain Model\nMatches backend ubiquitous language\nBusiness logic methods"
+    note for SimulationService "Adapter Pattern\nTranslates between domain and API\nIsolates DTO changes"
+</div>
+<hr/>
+<h2 id="8-state-diagram-simulation-lifecycle">8. State Diagram - Simulation Lifecycle</h2>
+<div class="mermaid">stateDiagram-v2
+    [*] --&gt; PENDING : User submits simulation
+
+    PENDING --&gt; RUNNING : Queue picks up task
+    PENDING --&gt; CANCELLED : User cancels before start
+    PENDING --&gt; FAILED : Validation fails
+
+    RUNNING --&gt; COMPLETED : Execution successful
+    RUNNING --&gt; FAILED : Execution error
+    RUNNING --&gt; CANCELLED : User cancels during execution
+
+    COMPLETED --&gt; [*]
+    FAILED --&gt; [*]
+    CANCELLED --&gt; [*]
+
+    note right of PENDING
+        Initial state
+        Awaiting queue pickup
+    end note
+
+    note right of RUNNING
+        Currently executing
+        Progress updates available
+    end note
+
+    note right of COMPLETED
+        Successful completion
+        Results available
+    end note
+
+    note right of FAILED
+        Error occurred
+        Error logs available
+    end note
+
+    note right of CANCELLED
+        User-initiated cancellation
+        Partial results may exist
+    end note
+</div>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+<script src="../assets/mkdocs_puml/puml.js"></script>
+<script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+<script src="../assets/mkdocs_puml/interaction.js"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@11.12.0/dist/mermaid.esm.min.mjs";
+mermaid.initialize({});</script></body>
+</html>

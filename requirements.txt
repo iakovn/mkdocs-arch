@@ -1,5 +1,5 @@
 mkdocs==1.6.1
-mkdocs-build-plantuml-plugin==1.9.0
+mkdocs-build-plantuml-plugin==2.0.0
 mkdocs-get-deps==0.2.0
 mkdocs-include-markdown-plugin==7.2.0
 mkdocs-macros-plugin==1.4.0

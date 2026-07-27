@@ -1,0 +1,111 @@
+@startuml frontend-code
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_TOP_DOWN()
+
+title Code Level Diagram - SimulationSubmitView Component Structure
+
+Component(simSubmitView, "SimulationSubmitView.vue", "Vue Component", "Page component for submitting simulations")
+
+package "Template Section" {
+    Component(template, "<template>", "Vue Template", "Declarative UI markup")
+    Component(formComp, "<SimulationForm>", "Component Usage", "Form component instance")
+    Component(notifications, "<NotificationToast>", "Component Usage", "Notification display")
+}
+
+package "Script Section - Composition API" {
+    Component(imports, "Imports", "ES6 Imports", "Import dependencies")
+    Component(composables, "Composables Setup", "Vue Composition", "useSimulation(), useNotification()")
+    Component(reactiveState, "Reactive State", "Vue Refs", "formData, isSubmitting, validationErrors")
+    Component(computed, "Computed Properties", "Vue Computed", "canSubmit, isFormValid")
+    Component(methods, "Methods", "Functions", "handleSubmit(), handleCancel(), validateForm()")
+    Component(lifecycle, "Lifecycle Hooks", "Vue Hooks", "onMounted(), onUnmounted()")
+    Component(watchers, "Watchers", "Vue Watch", "watch(formData, validate)")
+}
+
+package "Used Composables" {
+    Component(useSimComp, "useSimulation()", "Composable", "Provides submit(), cancel(), isLoading")
+    Component(useNotifComp, "useNotification()", "Composable", "Provides showSuccess(), showError()")
+}
+
+package "Domain Models" {
+    Component(simModel, "Simulation", "TypeScript Interface", "id, name, parameters, status, createdAt, submit(), validate()")
+    
+    Component(simParamsModel, "SimulationParameters", "TypeScript Interface", "iterations, timeout, algorithm, validate()")
+    
+    Component(simStatusModel, "SimulationStatus", "TypeScript Enum", "PENDING, RUNNING, COMPLETED, FAILED, CANCELLED")
+}
+
+package "Store" {
+    Component(simStoreActions, "SimulationStore Actions", "Pinia", "submitSimulation(params)")
+    Component(simStoreState, "SimulationStore State", "Pinia", "simulations[], loading, error")
+}
+
+package "Services" {
+    Component(simServiceSubmit, "SimulationService.submit()", "Method", "Calls API and transforms DTO")
+    Component(apiClientPost, "ApiClient.post()", "Method", "Makes HTTP POST request")
+}
+
+' Relationships
+Rel(simSubmitView, template, "Contains", "")
+Rel(template, formComp, "Renders", "")
+Rel(template, notifications, "Renders", "")
+
+Rel(simSubmitView, imports, "Begins with", "")
+Rel(simSubmitView, composables, "Sets up", "")
+Rel(simSubmitView, reactiveState, "Declares", "")
+Rel(simSubmitView, computed, "Defines", "")
+Rel(simSubmitView, methods, "Implements", "")
+Rel(simSubmitView, lifecycle, "Registers", "")
+Rel(simSubmitView, watchers, "Configures", "")
+
+Rel(composables, useSimComp, "Calls", "")
+Rel(composables, useNotifComp, "Calls", "")
+
+Rel(methods, useSimComp, "Calls submit()", "")
+Rel(methods, simModel, "Creates instance", "")
+Rel(methods, simParamsModel, "Creates instance", "")
+
+Rel(useSimComp, simStoreActions, "Dispatches", "")
+Rel(simStoreActions, simServiceSubmit, "Calls", "")
+Rel(simServiceSubmit, apiClientPost, "Uses", "")
+
+Rel(reactiveState, simParamsModel, "Typed as", "")
+Rel(simModel, simStatusModel, "Has", "")
+Rel(simModel, simParamsModel, "Contains", "")
+
+note right of simSubmitView
+**Component Structure**
+- Single File Component (SFC)
+- Composition API style
+- TypeScript for type safety
+- Reactive state management
+end note
+
+note right of simModel
+**Domain Model**
+- Matches backend ubiquitous language
+- Business logic methods
+- Type-safe properties
+- Validation rules
+end note
+
+note right of useSimComp
+**Composable Benefits**
+- Reusable logic
+- Testable in isolation
+- Reactive state
+- Clean separation of concerns
+end note
+
+note bottom of simServiceSubmit
+**Flow: Component → Composable → Store → Service → API**
+Each layer has clear responsibility:
+- Component: User interaction
+- Composable: Business logic
+- Store: State management
+- Service: API translation
+- API Client: HTTP communication
+end note
+
+@enduml

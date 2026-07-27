@@ -1,0 +1,131 @@
+@startuml frontend-component
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Component Diagram - Web Application (Vue.js Frontend - Detailed)
+
+Person(researcher, "Researcher", "System user")
+
+Container_Boundary(spa, "Web Application - Vue.js SPA") {
+    
+    Component(router, "Vue Router", "Vue Router", "Client-side routing, navigation guards")
+    
+    ' Presentation Layer - Views
+    Component(simListView, "SimulationListView", "Vue Component", "Displays list of simulations with filtering and sorting")
+    Component(simDetailView, "SimulationDetailView", "Vue Component", "Shows detailed simulation information and logs")
+    Component(simSubmitView, "SimulationSubmitView", "Vue Component", "Form for submitting new simulations")
+    Component(dashboardView, "DashboardView", "Vue Component", "Overview with statistics and recent simulations")
+    
+    ' Presentation Components
+    Component(simCard, "SimulationCard", "Vue Component", "Reusable card displaying simulation summary")
+    Component(simForm, "SimulationForm", "Vue Component", "Reusable form with validation for simulation parameters")
+    Component(simStatus, "SimulationStatusBadge", "Vue Component", "Visual status indicator (pending, running, completed)")
+    Component(simTable, "SimulationTable", "Vue Component", "Sortable, filterable table of simulations")
+    
+    ' State Management
+    Component(store, "Pinia Store", "Pinia", "Centralized state management")
+    Component(simStore, "SimulationStore", "Pinia Store Module", "Manages simulation state, actions, and getters")
+    Component(authStore, "AuthStore", "Pinia Store Module", "Manages authentication state")
+    Component(uiStore, "UIStore", "Pinia Store Module", "Manages UI state (loading, errors, notifications)")
+    
+    ' Services/Composables Layer
+    Component(apiClient, "ApiClient", "Service", "HTTP client wrapper with interceptors, error handling")
+    Component(simService, "SimulationService", "Service", "Translates between API DTOs and domain models")
+    Component(authService, "AuthService", "Service", "Handles authentication, token management")
+    
+    ' Composables (Vue 3)
+    Component(useSimulation, "useSimulation", "Composable", "Reactive simulation operations (submit, cancel, refresh)")
+    Component(useSimulationList, "useSimulationList", "Composable", "Reactive list operations (fetch, filter, sort)")
+    Component(useAuth, "useAuth", "Composable", "Authentication logic and state")
+    Component(useNotification, "useNotification", "Composable", "Toast notifications")
+    
+    ' Domain Models (Frontend)
+    Component(simModel, "Simulation", "TypeScript Interface/Class", "Frontend domain model matching backend ubiquitous language")
+    Component(simParamsModel, "SimulationParameters", "TypeScript Interface", "Value object for simulation configuration")
+    Component(simStatusModel, "SimulationStatus", "TypeScript Enum", "Status enumeration (Pending, Running, Completed, Failed)")
+    
+    ' API DTOs
+    Component(simDTO, "SimulationDTO", "TypeScript Interface", "Data transfer object for API communication")
+}
+
+Container(api, "API Application", "Go", "Backend API")
+
+' User interactions
+Rel(researcher, router, "Navigates to pages", "HTTPS")
+Rel(router, simListView, "Routes to", "")
+Rel(router, simDetailView, "Routes to", "")
+Rel(router, simSubmitView, "Routes to", "")
+Rel(router, dashboardView, "Routes to", "")
+
+' View to Component relationships
+Rel(simListView, simTable, "Uses", "Props & Events")
+Rel(simListView, simCard, "Uses", "Props & Events")
+Rel(simDetailView, simStatus, "Uses", "Props")
+Rel(simSubmitView, simForm, "Uses", "Props & Events")
+Rel(dashboardView, simCard, "Uses", "Props & Events")
+
+' Views to Composables
+Rel(simListView, useSimulationList, "Uses", "Reactive data & methods")
+Rel(simDetailView, useSimulation, "Uses", "Reactive data & methods")
+Rel(simSubmitView, useSimulation, "Uses", "Reactive data & methods")
+Rel(simListView, useNotification, "Uses", "Show notifications")
+
+' Composables to Store
+Rel(useSimulation, simStore, "Accesses/mutates", "")
+Rel(useSimulationList, simStore, "Accesses/mutates", "")
+Rel(useAuth, authStore, "Accesses/mutates", "")
+
+' Store to Services
+Rel(simStore, simService, "Calls", "")
+Rel(authStore, authService, "Calls", "")
+
+' Services to API Client
+Rel(simService, apiClient, "Makes HTTP requests", "")
+Rel(authService, apiClient, "Makes HTTP requests", "")
+
+' Services use Models
+Rel(simService, simModel, "Returns/accepts", "")
+Rel(simService, simDTO, "Transforms to/from", "")
+Rel(simStore, simModel, "Stores", "")
+
+' API Client to Backend
+Rel(apiClient, api, "HTTP requests", "JSON/HTTPS")
+
+note right of simModel
+  **Frontend Domain Model**
+  Uses same "Simulation"
+  terminology as backend
+  - Consistent naming
+  - Type safety
+  - Business logic helpers
+end note
+
+note right of simService
+  **Adapter Pattern**
+  Translates between:
+  - API DTOs (wire format)
+  - Domain models (app format)
+  Isolates API changes
+end note
+
+note right of useSimulation
+  **Composable (Vue 3)**
+  Encapsulates:
+  - Reactive state
+  - Business logic
+  - Side effects
+  Reusable across views
+end note
+
+note right of simStore
+  **State Management**
+  Single source of truth
+  for simulation data
+  - Actions (async ops)
+  - Getters (computed)
+  - State (reactive)
+end note
+
+SHOW_LEGEND()
+@enduml

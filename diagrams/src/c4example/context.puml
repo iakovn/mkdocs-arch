@@ -1,0 +1,29 @@
+@startuml context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title System Context Diagram - Simulation Job Queue System
+
+Person(researcher, "Researcher", "User who submits and monitors simulation jobs")
+Person(admin, "System Administrator", "Manages system configuration and monitoring")
+
+System(simSystem, "Simulation System", "Allows users to submit, monitor, and manage simulation jobs using consistent terminology across all interfaces")
+
+System_Ext(machinery, "Machinery Queue", "Distributed task queue using Redis for job processing")
+System_Ext(lambda, "AWS Lambda", "Serverless compute platform for simulation execution")
+System_Ext(sqs, "AWS SQS", "Message queue service for Lambda-based simulations")
+System_Ext(redis, "Redis", "In-memory data store for Machinery queue backend")
+System_Ext(monitoring, "Monitoring System", "System metrics and logs (Prometheus, Grafana)")
+
+Rel(researcher, simSystem, "Submits simulations, views results", "HTTPS")
+Rel(admin, simSystem, "Configures system, views metrics", "HTTPS")
+
+Rel(simSystem, machinery, "Enqueues simulation tasks", "Machinery Protocol")
+Rel(simSystem, lambda, "Invokes simulation functions", "AWS SDK")
+Rel(simSystem, sqs, "Sends simulation messages", "AWS SQS API")
+Rel(machinery, redis, "Stores task state", "Redis Protocol")
+Rel(simSystem, monitoring, "Sends metrics and logs", "Prometheus/Loki")
+
+SHOW_LEGEND()
+@enduml

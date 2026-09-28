@@ -1,0 +1,77 @@
+@startuml system_landscape
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title System Landscape Diagram - Research & Simulation Platform
+
+Person(researcher, "Researcher", "Conducts simulations and analyzes results")
+Person(admin, "Administrator", "Manages users and system configuration")
+Person(dataScientist, "Data Scientist", "Develops and trains models")
+Person(auditor, "Compliance Auditor", "Reviews system usage and access logs")
+
+Enterprise_Boundary(platform, "Research & Simulation Platform") {
+    System(simSystem, "Simulation Job Queue System", "Manages submission, execution, and monitoring of simulation jobs using distributed queues")
+    
+    System(userMgmt, "User Management System", "Handles authentication, authorization, user profiles, and role-based access control")
+    
+    System(modelingSystem, "Modeling System", "Provides tools for creating, versioning, and managing simulation models and parameters")
+    
+    System(dataLake, "Data Lake System", "Stores and manages large-scale simulation results, raw data, and datasets for analysis")
+    
+    System(reportingSystem, "Reporting & Analytics System", "Generates reports, visualizations, and statistical analysis of simulation results")
+    
+    System(notificationSystem, "Notification System", "Sends email, SMS, and in-app notifications about simulation status and system events")
+}
+
+System_Ext(sso, "Corporate SSO", "SAML/OAuth2 identity provider (Okta, Azure AD)")
+System_Ext(billing, "Billing System", "Tracks resource usage and generates invoices")
+System_Ext(hpc, "HPC Cluster", "High-performance computing infrastructure for intensive simulations")
+System_Ext(cloudStorage, "Cloud Storage", "AWS S3/Azure Blob for long-term data archival")
+System_Ext(monitoring, "Monitoring Platform", "Prometheus, Grafana, ELK stack for observability")
+System_Ext(emailService, "Email Service", "SendGrid/SES for transactional emails")
+
+' User to System relationships
+Rel(researcher, simSystem, "Submits and monitors simulations", "HTTPS/WebSocket")
+Rel(researcher, modelingSystem, "Creates and manages models", "HTTPS")
+Rel(researcher, reportingSystem, "Views reports and analytics", "HTTPS")
+
+Rel(dataScientist, modelingSystem, "Develops ML models", "HTTPS/API")
+Rel(dataScientist, dataLake, "Accesses training data", "HTTPS/S3 API")
+
+Rel(admin, userMgmt, "Manages users and permissions", "HTTPS")
+Rel(admin, simSystem, "Configures system settings", "HTTPS")
+
+Rel(auditor, userMgmt, "Reviews access logs", "HTTPS")
+Rel(auditor, reportingSystem, "Views audit reports", "HTTPS")
+
+' Inter-system relationships
+Rel(simSystem, userMgmt, "Authenticates users, checks permissions", "REST API/gRPC")
+Rel(simSystem, modelingSystem, "Fetches model definitions", "REST API")
+Rel(simSystem, dataLake, "Stores simulation results", "S3 API")
+Rel(simSystem, notificationSystem, "Triggers status notifications", "Message Queue")
+Rel(simSystem, billing, "Reports resource usage", "REST API")
+
+Rel(modelingSystem, userMgmt, "Authenticates users", "REST API")
+Rel(modelingSystem, dataLake, "Stores model artifacts", "S3 API")
+
+Rel(reportingSystem, simSystem, "Queries simulation data", "REST API/SQL")
+Rel(reportingSystem, dataLake, "Reads result datasets", "S3 API")
+Rel(reportingSystem, userMgmt, "Authenticates users", "REST API")
+
+Rel(dataLake, cloudStorage, "Archives old data", "S3 API")
+
+Rel(notificationSystem, emailService, "Sends emails", "SMTP/API")
+
+Rel(userMgmt, sso, "Federates authentication", "SAML/OAuth2")
+
+' System to Monitoring
+Rel(simSystem, monitoring, "Sends metrics and logs", "Prometheus/Loki")
+Rel(userMgmt, monitoring, "Sends metrics and logs", "Prometheus/Loki")
+Rel(modelingSystem, monitoring, "Sends metrics and logs", "Prometheus/Loki")
+
+' Simulation execution
+Rel(simSystem, hpc, "Dispatches heavy compute jobs", "SSH/SLURM API")
+
+SHOW_LEGEND()
+@enduml

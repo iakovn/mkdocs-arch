@@ -1,0 +1,74 @@
+@startuml backend-component
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Component Diagram - API Application (Backend)
+
+Container(spa, "Web Application", "Vue.js SPA", "Frontend making API calls")
+
+Container_Boundary(api, "API Application") {
+    Component(router, "HTTP Router", "Go net/http", "Routes requests to appropriate handlers")
+    
+    Component(simHandler, "SimulationHandler", "Primary Adapter", "Handles HTTP requests for simulation operations")
+    Component(middleware, "Auth Middleware", "Go middleware", "Authentication and authorization")
+    
+    Component(simService, "SimulationService", "Primary Port Interface", "Defines use cases for simulation operations")
+    
+    Component(simAggregate, "Simulation Aggregate", "Domain Entity", "Core simulation business logic and rules")
+    Component(simScheduler, "SimulationScheduler", "Domain Service", "Orchestrates simulation scheduling logic")
+    Component(simValidator, "SimulationValidator", "Domain Service", "Validates simulation parameters")
+    
+    Component(queuePort, "SimulationQueue", "Secondary Port Interface", "Defines contract for queue operations")
+    Component(repoPort, "SimulationRepository", "Secondary Port Interface", "Defines contract for persistence")
+    
+    Component(machineryAdapter, "MachinerySimulationQueue", "Secondary Adapter", "Implements queue port for Machinery")
+    Component(lambdaAdapter, "LambdaSimulationQueue", "Secondary Adapter", "Implements queue port for AWS Lambda")
+    Component(pgAdapter, "PostgresSimulationRepo", "Secondary Adapter", "Implements repository port for PostgreSQL")
+}
+
+ContainerDb(db, "Application Database", "PostgreSQL", "Stores simulation data")
+System_Ext(machinery, "Machinery Queue", "Task queue system")
+System_Ext(lambda, "AWS Lambda + SQS", "Serverless platform")
+
+Rel(spa, router, "Makes API calls", "JSON/HTTPS")
+Rel(router, middleware, "Passes request", "")
+Rel(middleware, simHandler, "Authenticated request", "")
+
+Rel(simHandler, simService, "Calls use cases", "Go interface")
+
+Rel(simService, simAggregate, "Uses", "")
+Rel(simService, simScheduler, "Uses", "")
+Rel(simService, simValidator, "Uses", "")
+Rel(simService, queuePort, "Enqueues via interface", "")
+Rel(simService, repoPort, "Persists via interface", "")
+
+Rel(queuePort, machineryAdapter, "Implemented by", "")
+Rel(queuePort, lambdaAdapter, "Implemented by", "")
+Rel(repoPort, pgAdapter, "Implemented by", "")
+
+Rel(machineryAdapter, machinery, "Translates to Machinery Task", "Machinery Protocol")
+Rel(lambdaAdapter, lambda, "Translates to Lambda Event", "AWS SDK")
+Rel(pgAdapter, db, "SQL queries", "SQL/TLS")
+
+note right of simAggregate
+  **Domain Layer**
+  - Pure business logic
+  - No infrastructure
+  - Ubiquitous Language
+end note
+
+note right of queuePort
+  **Port Interface**
+  Enqueue(sim Simulation) error
+  GetStatus(id SimulationId) Status
+end note
+
+note right of machineryAdapter
+  **Adapter**
+  Translates Simulation
+  to machinery.Task
+end note
+
+SHOW_LEGEND()
+@enduml

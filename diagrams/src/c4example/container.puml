@@ -1,0 +1,54 @@
+@startuml container
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Container Diagram - Simulation Job Queue System
+
+Person(researcher, "Researcher", "User who submits and monitors simulations")
+
+System_Boundary(simSystem, "Simulation System") {
+    Container(spa, "Web Application", "Vue.js SPA", "Provides simulation submission and monitoring UI using consistent 'Simulation' terminology")
+    Container(docs, "User Documentation", "Markdown/HTML", "User manual and API documentation using 'Simulation' ubiquitous language")
+    Container(api, "API Application", "Go", "Handles simulation requests, implements domain logic and ports")
+    Container(domain, "Domain Core", "Go", "Pure business logic for simulations - no infrastructure dependencies")
+    ContainerDb(db, "Application Database", "PostgreSQL", "Stores simulation metadata, status, and results")
+}
+
+System_Ext(machinery, "Machinery Queue", "Task queue with Redis backend")
+System_Ext(lambda, "AWS Lambda", "Serverless execution platform")
+System_Ext(sqs, "AWS SQS", "Message queue service")
+
+Rel(researcher, spa, "Views simulations, submits new simulations", "HTTPS")
+Rel(researcher, docs, "Reads about simulation concepts", "HTTPS")
+
+Rel(spa, api, "Makes API calls using Simulation terminology", "JSON/HTTPS")
+Rel(api, domain, "Uses domain services and aggregates", "Function calls")
+Rel(api, db, "Reads/writes simulation data", "SQL/TLS")
+
+Rel(api, machinery, "Enqueues via MachineryAdapter", "Machinery Protocol")
+Rel(api, lambda, "Invokes via LambdaAdapter", "AWS SDK")
+Rel(api, sqs, "Sends messages via LambdaAdapter", "AWS SQS API")
+
+note right of spa
+  Frontend uses consistent
+  "Simulation" terminology
+  matching domain model
+end note
+
+note right of domain
+  Pure domain logic:
+  - Simulation aggregate
+  - SimulationScheduler service
+  - Port interfaces only
+end note
+
+note right of api
+  Adapters implement ports:
+  - MachinerySimulationQueue
+  - LambdaSimulationQueue
+  - PostgresSimulationRepo
+end note
+
+SHOW_LEGEND()
+@enduml
